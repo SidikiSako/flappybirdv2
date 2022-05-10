@@ -4,13 +4,16 @@ import 'package:flame/assets.dart';
 import 'package:flame/sprite.dart';
 import 'package:flappybird_v2/flappy_game.dart';
 
-const double baseHeight = 150;
+const double baseMovement = -130;
 
 class Base {
   final FlappyGame game;
   late final Sprite baseSprite;
   Rect? baseRect;
-  Base({required this.game}) {
+  final double leftPosition;
+  bool isVisible = true;
+
+  Base({required this.game, required this.leftPosition}) {
     initBase();
   }
 
@@ -18,11 +21,21 @@ class Base {
     final Images imageLoader = Images();
     baseSprite = Sprite(await imageLoader.load('base.png'));
     baseRect = Rect.fromLTWH(
-        0, game.screenSize.y - baseHeight, game.screenSize.x, baseHeight);
+        leftPosition,
+        game.screenSize.y - (game.screenSize.y / 8),
+        game.screenSize.x,
+        game.screenSize.y / 8);
   }
 
   void update(double t) {
-    baseRect = baseRect?.translate(-1, 0);
+    Rect? rect = baseRect;
+    if (rect != null) {
+      baseRect = rect.translate(baseMovement * t, 0);
+      if (rect.right <= 0) {
+        isVisible = false;
+      }
+    }
+    //baseRect = baseRect?.translate(-2, 0);
   }
 
   void render(Canvas c) {
