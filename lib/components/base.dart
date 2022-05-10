@@ -9,7 +9,7 @@ const double baseHeight = 150;
 class Base {
   final FlappyGame game;
   late final Sprite baseSprite;
-  late final Rect baseRect;
+  Rect? baseRect;
   Base({required this.game}) {
     initBase();
   }
@@ -21,9 +21,15 @@ class Base {
         0, game.screenSize.y - baseHeight, game.screenSize.x, baseHeight);
   }
 
-  void update(double t) {}
+  void update(double t) {
+    baseRect = baseRect?.translate(-1, 0);
+  }
 
   void render(Canvas c) {
-    baseSprite.renderRect(c, baseRect);
+    Rect? rect = baseRect;
+    if (rect != null) {
+      baseSprite.renderRect(c, rect);
+    }
+    //baseSprite.renderRect(c, baseRect!);
   }
 }

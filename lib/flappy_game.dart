@@ -30,6 +30,6 @@ class FlappyGame with Game {
 
   @override
   void update(double dt) {
-    // TODO: implement update
+    base.update(dt);
   }
 }
